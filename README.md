@@ -23,7 +23,7 @@ DoRA demonstrates superior performance over LoRA in fine-tuning models like LLaM
 ### How LoRA Works
 
 <h1 align="center"> 
-    <img src="./imgs/Lora_Schema.png" width="600">
+    <img src="./imgs/Lora_Schema.png" width="400">
 </h1>
 
 
@@ -57,7 +57,8 @@ DoRA (Decomposition of Rank Adaptation) addresses the limitations of LoRA by dec
     <img src="./imgs/dora.png" width="600">
 </h1>
 
-###**Weight Decomposition**: The pre-trained weight matrix \( W \) is decomposed into two parts:
+### **Weight Decomposition**: 
+The pre-trained weight matrix \( W \) is decomposed into two parts:
    - **Magnitude**: Captures the overall scale of weights, which remains fixed.
    - **Direction**: Represents the adaptive component, where LoRA is applied for fine-tuning.
 
@@ -91,13 +92,27 @@ where:
 - \( A \) and \( B \) are low-rank matrices used for efficient fine-tuning.
 
 
-###**Updates During Training**: LoRA is employed specifically to update the directional component of \( W \), while the magnitudes are trained seperated as a lone column vector.
+### **Updates During Training**: 
+LoRA is employed specifically to update the directional component of \( W \), while the magnitudes are trained seperated as a lone column vector.
 
 <h1 align="center"> 
     <img src="./imgs/Dora_updates.png" width="600">
 </h1>
 
 where ∆V is the incremental directional update learned by multiplying two low-rank matrices B and A, and the underlined parameters denote the trainable parameters. The matrices B ∈ R d×r and A ∈ R r×k are initialized in line with LoRA’s strategy to ensure that W ′ equals W 0 before the finetuning.
+
+
+# LoRA vs Dora
+
+<h1 align="center"> 
+    <img src="./imgs/FT_vs_Lora_vs_Dora.png" width="1000">
+</h1>
+
+Magnitude and direction updates of (a) FT, (b) LoRA, and (c) DoRA of the query matrices across different layers and intermediate steps. Different markers represent matrices of different training steps and different colors represent the matrices of each layer.
+
+- FT: Downward Slope dM vs dD, high variance (Varied learning pattern with a relatively negative slope)
+- Lora: Upward Slope dm vs dD, low variance (Proportional relationship between the changes in direction and magnitud)
+- Dora: Downward Slope dM vs dD, high variance (similar to FT pattern)
 
 
 ## DoRA vs LoRA on the commonsense reasoning tasks 
