@@ -51,21 +51,21 @@ During fine-tuning, only A and B are updated, while W remains frozen.
 
 DoRA (Decomposition of Rank Adaptation) addresses the limitations of LoRA by decomposing pre-trained weights into two distinct components: **magnitude** and **direction**. Instead of directly adapting all parameters, DoRA uses LoRA to update only the *directional* component. This approach allows for efficient parameter updates that maximize learning capacity while preserving training stability and minimizing computational overhead.
 
-### How DoRA Works
+## How DoRA Works
 
 <h1 align="center"> 
     <img src="./imgs/dora.png" width="600">
 </h1>
 
-1. **Weight Decomposition**: The pre-trained weight matrix \( W \) is decomposed into two parts:
+###**Weight Decomposition**: The pre-trained weight matrix \( W \) is decomposed into two parts:
    - **Magnitude**: Captures the overall scale of weights, which remains fixed.
    - **Direction**: Represents the adaptive component, where LoRA is applied for fine-tuning.
 
-2. **Updates During Training**: LoRA is employed specifically to update the directional component of \( W \), while the magnitudes are trained seperated as a lone column vector.
+<h1 align="center"> 
+    <img src="./imgs/Dora_decomposition.png" width="600">
+</h1>
 
-
-
-### DoRA Pseudo Code
+ where m ∈ R 1×k is the magnitude vector, V ∈ R d×k is the directional matrix, with || · || c being the vector-wise norm of a matrix across each column. This decomposition ensures that each column of V/ || V || c remains a unit vector, and the corresponding scalar in m defines the magnitude of each vector.
 
 ```python
 # Assume W is the pre-trained weight matrix
@@ -85,15 +85,19 @@ def forward(X):
 
 # During training, only A and B are updated, keeping W's magnitude and the core direction structure fixed.
 ```
-
-
 where:
 - \( X \) represents the input activations,
 - \( W \) is the pre-trained weight matrix,
 - \( A \) and \( B \) are low-rank matrices used for efficient fine-tuning.
 
-In LoRA, the term \((XA)B\) approximates the update for \( W \) while keeping the number of additional parameters low. This formulation helps reduce computational costs and speeds up training by only learning the components in \( A \) and \( B \).
 
+###**Updates During Training**: LoRA is employed specifically to update the directional component of \( W \), while the magnitudes are trained seperated as a lone column vector.
+
+<h1 align="center"> 
+    <img src="./imgs/Dora_updates.png" width="600">
+</h1>
+
+where ∆V is the incremental directional update learned by multiplying two low-rank matrices B and A, and the underlined parameters denote the trainable parameters. The matrices B ∈ R d×r and A ∈ R r×k are initialized in line with LoRA’s strategy to ensure that W ′ equals W 0 before the finetuning.
 
 
 ## DoRA vs LoRA on the commonsense reasoning tasks 
