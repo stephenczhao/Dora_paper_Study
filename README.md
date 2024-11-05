@@ -2,24 +2,60 @@
     <p> DoRA: Weight-Decomposed Low-Rank Adaptation <br> [ICML2024 (Oral)]</p>
 </h1>
 
+<h1 align="center"> 
+    <img src="./imgs/dora.png" width="600">
+</h1>
 
 [[`Paper`](https://arxiv.org/abs/2402.09353)] [[`Website`](https://nbasyl.github.io/DoRA-project-page/)]  [[`BibTeX`](#citation)]
 
-# Introduction: 
+# Introduction
 
-Parameter efficient fine-tuning have been widely used in recent years, making training large models accessible and less computationally expensive. Specifically, [[LoRA](https://arxiv.org/pdf/2106.09685)]  - Low Rank Adaptation, have gain increasing popularity. 
+Parameter-efficient fine-tuning has become essential in recent years, making the training of large models more accessible and computationally feasible. Among these methods, [[LoRA](https://arxiv.org/pdf/2106.09685)] (Low Rank Adaptation) has gained significant traction.
 
-**Problem**: There still often exists a gap in learning effectiveness between LoRA and full fine-tuning (FT) of models. 
+**Problem**: Despite its advantages, LoRA can still fall short in learning effectiveness compared to full fine-tuning (FT) of models.
 
-**DoRA** decomposes the pre-trained weight into two components, *magnitude* and *direction*, for fine-tuning, specifically employing LoRA for directional updates to minimize the number of trainable parameters efficiently. By employing DoRA, we enhance both the learning capacity and training stability of LoRA while avoiding any additional inference overhead. DoRA consistently outperforms LoRA on fine-tuning LLaMA, LLaVA, and VL-BART on various downstream tasks, such as commonsense reasoning, visual instruction tuning, and image/video-text understanding.
+**Solution - DoRA**: The DoRA approach decomposes pre-trained weights into two components: *magnitude* and *direction*. It leverages LoRA specifically for directional updates, reducing the number of trainable parameters needed for effective fine-tuning. By focusing on directional updates, DoRA enhances both the learning capacity and stability of LoRA without introducing additional inference overhead.
+
+DoRA demonstrates superior performance over LoRA in fine-tuning models like LLaMA, LLaVA, and VL-BART across various downstream tasks, including commonsense reasoning, visual instruction tuning, and image/video-text understanding.
 
 
 # Context: LoRA and is limitations
 
-
+### LoRA Schematics
 <h1 align="center"> 
-    <img src="./imgs/dora.png" width="600">
+    <img src="./imgs/Lora_Schema.png" width="600">
 </h1>
+
+### How LoRA Works
+
+LoRA (Low Rank Adaptation) is a parameter-efficient fine-tuning technique that modifies only a small subset of model weights during training. Instead of updating the entire weight matrix, LoRA introduces low-rank matrices that adapt the weight direction with minimal parameter changes. This approach significantly reduces the number of trainable parameters, making fine-tuning less resource-intensive.
+
+**LoRA Pseudo Code**:
+
+```python
+# Pseudo code for applying LoRA to a pre-trained model weight matrix W
+# Original weight matrix: W ∈ R^(d_out x d_in)
+
+# Define low-rank matrices A and B, where rank r << min(d_out, d_in)
+A = nn.Parameter(torch.randn(d_out, r))  # Low-rank matrix A
+B = nn.Parameter(torch.randn(r, d_in))   # Low-rank matrix B
+
+# Forward pass with LoRA adaptation
+def forward(X):
+    # X: Input to the model
+    return W @ X + (A @ B) @ X  # Original weight W plus low-rank adaptation
+```
+
+# During fine-tuning, only A and B are updated, while W remains frozen.
+
+
+where:
+- \( X \) represents the input activations,
+- \( W \) is the pre-trained weight matrix,
+- \( A \) and \( B \) are low-rank matrices used for efficient fine-tuning.
+
+In LoRA, the term \((XA)B\) approximates the update for \( W \) while keeping the number of additional parameters low. This formulation helps reduce computational costs and speeds up training by only learning the components in \( A \) and \( B \).
+
 
 
 ## DoRA vs LoRA on the commonsense reasoning tasks 
