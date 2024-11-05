@@ -143,7 +143,7 @@ DoRA enhances the learning capability of LoRA, thereby reducing the need for a h
 ### Critical Analysis: 
 
 - Dora leads to slightly more paramaters than Lora due to the matrix decomposition and training magnitude and direction saperately.
-- Author didn't show direct benchmark other than language models (i.e. vision models, and multimodal modals).
+- Author didn't show direct benchmark other than language models (i.e. vision transformers and multimodal modals).
 
 
 
