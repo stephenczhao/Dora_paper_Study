@@ -1,5 +1,5 @@
 <h1 align="center">
-    <p> DoRA: Weight-Decomposed Low-Rank Adaptation <br> [ICML2024 (Oral)]</p>
+    <p> DoRA: Weight-Decomposed Low-Rank Adaptation <br></p>
 </h1>
 
 <h1 align="center"> 
@@ -20,13 +20,12 @@ DoRA demonstrates superior performance over LoRA in fine-tuning models like LLaM
 
 
 # Context: LoRA and is limitations
+### How LoRA Works
 
-### LoRA Schematics
 <h1 align="center"> 
     <img src="./imgs/Lora_Schema.png" width="600">
 </h1>
 
-### How LoRA Works
 
 LoRA (Low Rank Adaptation) is a parameter-efficient fine-tuning technique that modifies only a small subset of model weights during training. Instead of updating the entire weight matrix, LoRA introduces low-rank matrices that adapt the weight direction with minimal parameter changes. This approach significantly reduces the number of trainable parameters, making fine-tuning less resource-intensive.
 
@@ -46,7 +45,46 @@ def forward(X):
     return W @ X + (A @ B) @ X  # Original weight W plus low-rank adaptation
 ```
 
-# During fine-tuning, only A and B are updated, while W remains frozen.
+During fine-tuning, only A and B are updated, while W remains frozen.
+
+# DoRA Decomposition
+
+DoRA (Decomposition of Rank Adaptation) addresses the limitations of LoRA by decomposing pre-trained weights into two distinct components: **magnitude** and **direction**. Instead of directly adapting all parameters, DoRA uses LoRA to update only the *directional* component. This approach allows for efficient parameter updates that maximize learning capacity while preserving training stability and minimizing computational overhead.
+
+### How DoRA Works
+
+<h1 align="center"> 
+    <img src="./imgs/dora.png" width="600">
+</h1>
+
+1. **Weight Decomposition**: The pre-trained weight matrix \( W \) is decomposed into two parts:
+   - **Magnitude**: Captures the overall scale of weights, which remains fixed.
+   - **Direction**: Represents the adaptive component, where LoRA is applied for fine-tuning.
+
+2. **Updates During Training**: LoRA is employed specifically to update the directional component of \( W \), while the magnitudes are trained seperated as a lone column vector.
+
+
+
+### DoRA Pseudo Code
+
+```python
+# Assume W is the pre-trained weight matrix
+# Step 1: Decompose W into magnitude (|W|) and direction (W/|W|) components
+magnitude = torch.norm(W, dim=1, keepdim=True)  # Calculate the magnitude
+direction = W / magnitude  # Normalize to get direction
+
+# Step 2: Initialize low-rank matrices A and B for directional updates
+A = nn.Parameter(torch.randn(direction.size(0), r))  # Low-rank matrix A
+B = nn.Parameter(torch.randn(r, direction.size(1)))  # Low-rank matrix B
+
+# Step 3: Fine-tune by updating direction with LoRA while keeping magnitude fixed
+def forward(X):
+    # Apply the fixed magnitude and updated direction for fine-tuning
+    adaptive_direction = direction + (A @ B)  # LoRA updates applied to direction
+    return (magnitude * adaptive_direction) @ X  # Final weighted output with fixed magnitude
+
+# During training, only A and B are updated, keeping W's magnitude and the core direction structure fixed.
+```
 
 
 where:
