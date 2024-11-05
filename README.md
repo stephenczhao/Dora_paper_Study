@@ -8,7 +8,10 @@
 
 [[`Paper`](https://arxiv.org/abs/2402.09353)] [[`Website`](https://nbasyl.github.io/DoRA-project-page/)]  [[`BibTeX`](#citation)]
 
+
 # Introduction
+
+Q1: Do you know what's the most popular way to train large language models on consumer-grade devices? 
 
 Parameter-efficient fine-tuning has become essential in recent years, making the training of large models more accessible and computationally feasible. Among these methods, [[LoRA](https://arxiv.org/pdf/2106.09685)] (Low Rank Adaptation) has gained significant traction.
 
@@ -28,6 +31,8 @@ DoRA demonstrates superior performance over LoRA in fine-tuning models like LLaM
 
 
 LoRA (Low Rank Adaptation) is a parameter-efficient fine-tuning technique that modifies only a small subset of model weights during training. Instead of updating the entire weight matrix, LoRA introduces low-rank matrices that adapt the weight direction with minimal parameter changes. This approach significantly reduces the number of trainable parameters, making fine-tuning less resource-intensive.
+
+Q2: What does rank do? What does it mean to have a higher/smaller rank? 
 
 **LoRA Pseudo Code**:
 
@@ -128,10 +133,13 @@ Magnitude and direction updates of (a) FT, (b) LoRA, and (c) DoRA of the query m
 | LLaMA3-8B-DoRA		  |  [16](https://huggingface.co/sliuau/DoRA-weights/tree/main/llama_dora_commonsense_checkpoints/LLama3-8B/dora_r16)   |  74.5 |88.8 |80.3| 95.5| 84.7| 90.1| 79.1| 87.2| **85.0**   |
 | LLaMA3-8B-DoRA 	  |  [32](https://huggingface.co/sliuau/DoRA-weights/tree/main/llama_dora_commonsense_checkpoints/LLama3-8B/dora_r32)   |   74.6| 89.3| 79.9 |95.5| 85.6| 90.5| 80.4 |85.8 |**85.2**  |
 
+DoRA enhances the learning capability of LoRA, thereby reducing the need for a higher rank to surpass LoRA in terms of accuracy.
 
 
+### Critical Analysis: 
 
-
+- Dora leads to slightly more paramaters than Lora due to the matrix decomposition and training magnitude and direction saperately.
+- Author didn't show direct benchmark other than language models (i.e. vision models, and multimodal modals).
 
 
 
