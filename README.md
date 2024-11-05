@@ -135,6 +135,10 @@ Magnitude and direction updates of (a) FT, (b) LoRA, and (c) DoRA of the query m
 
 DoRA enhances the learning capability of LoRA, thereby reducing the need for a higher rank to surpass LoRA in terms of accuracy.
 
+### Impact of Dora: 
+- Proves to be an effective alternative to LoRA in parameter efficient fine tuning while mimicking certain behavior of a full finetune training.
+- Make implimentations of large models more accessible for nuanced usecase and independent research. 
+
 
 ### Critical Analysis: 
 
