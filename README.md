@@ -147,7 +147,8 @@ DoRA enhances the learning capability of LoRA, thereby reducing the need for a h
 - Lora finetune [github page](https://github.com/microsoft/LoRA)
 - The Official PyTorch implementation of [**DoRA: Weight-Decomposed Low-Rank Adaptation**](https://arxiv.org/abs/2402.09353)
 - The official NVIDIA Tech Blog of [DoRA](https://developer.nvidia.com/blog/introducing-dora-a-high-performing-alternative-to-lora-for-fine-tuning/)
-- 
+- Deep dive on [Lora vs Dora ](https://medium.com/@adrien_morvan/dora-vs-lora-the-new-solution-to-finetune-llms-ed11142bf19b)
+- Comparing Fine-Tuning Optimization Techniques [(LoRA, QLoRA, DoRA, and QDoRA)](https://insights.encora.com/insights/comparing-fine-tuning-optimization-techniques-lora-qlora-dora-and-qdora)
 
 
 # Citations:
