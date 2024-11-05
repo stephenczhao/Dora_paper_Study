@@ -144,4 +144,31 @@ DoRA enhances the learning capability of LoRA, thereby reducing the need for a h
 
 
 # Useful Links
-The Official PyTorch implementation of [**DoRA: Weight-Decomposed Low-Rank Adaptation**](https://arxiv.org/abs/2402.09353) 
+The Official PyTorch implementation of [**DoRA: Weight-Decomposed Low-Rank Adaptation**](https://arxiv.org/abs/2402.09353)
+
+# Citations:
+
+```
+@article{liu2024dora,
+  title={DoRA: Weight-Decomposed Low-Rank Adaptation},
+  author={Liu, Shih-Yang and Wang, Chien-Yi and Yin, Hongxu and Molchanov, Pavlo and Wang, Yu-Chiang Frank and Cheng, Kwang-Ting and Chen, Min-Hung},
+  journal={arXiv preprint arXiv:2402.09353},
+  year={2024}
+}
+
+```
+
+```
+
+@misc{hu2021loralowrankadaptationlarge,
+      title={LoRA: Low-Rank Adaptation of Large Language Models}, 
+      author={Edward J. Hu and Yelong Shen and Phillip Wallis and Zeyuan Allen-Zhu and Yuanzhi Li and Shean Wang and Lu Wang and Weizhu Chen},
+      year={2021},
+      eprint={2106.09685},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2106.09685}, 
+}
+
+```
+
