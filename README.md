@@ -6,7 +6,7 @@
     <img src="./imgs/dora.png" width="600">
 </h1>
 
-[[`Paper`](https://arxiv.org/abs/2402.09353)] [[`Website`](https://nbasyl.github.io/DoRA-project-page/)]  [[`BibTeX`](#citation)]
+[[`Paper`](https://arxiv.org/abs/2402.09353)] [[`Website`](https://nbasyl.github.io/DoRA-project-page/)]
 
 
 # Introduction
